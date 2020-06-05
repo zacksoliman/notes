@@ -1,0 +1,39 @@
+* ICE/TURN/STUN and SIP
+
+** STUN
+
+*** Overview
+
+- Provides means for an endpoint to determine the IP addr. and port allocated by a NAT that corresponds to its private IP addr. and port.
+- Provides a way for endpoints to keep NAT binding alive.
+
+** TURN
+
+*** Overview
+
+- Hosts behind NAT can communicate with another host that can also be begind a NAT using a technique called *hole punching* (RFC 5128)
+  - Attempts to discover a direct communication path
+  - Will fail if both hosts are behind NATs that are not well behaved (see RFC5128, RFC4787)
+  - Address dependent mapping or address and port dependent mapping for example (RFC4787) (Look up why?)
+
+- TURN allows a host behind NATs (TURN client) to request that another host (TURN server) act as a relay.
+  - Client obtains a relayed transport address, an IP address and port on the server. 
+    Server relays, to the client, transport protocol data from the packet sent to this relayed transport address.
+  - Data encapsulated within a message header to allow client to know which peer sent data.
+
+- Client needs a way to communicate the relayed transoprt address to it's peers and to learn each peer's IP address and port.
+  - Out of scope of TURN spec
+  - If TURN used with ICE (RFC 8445) then relayed transport addr and IP:port of peers are included in the ICE candidate information
+  - RDV protocol can then carry these candidates in the body of SIP message (SDP-ICE)
+  - If used with other rdv protocol ICE provides guidance on the services the rdv protocol must perform.
+
+- TURN servers need to be high bandwwidth. Thus it is preferable to use it as a relay server only when a direct communication path is imposible
+
+- When a client or peer uses ICE to determine comm. path, ICE will try to use hole punching techniques to search for a direct path first.
+
+- TURN was originally invented to support multimedia sessions signaled using SIP. SIP supports forking => TURN supports multiple peers per relayed transport addr.
+
+- TURN designed as one piece of the larger ICE approach to NAT traversal.
+
+- TURN is an extention of STUN protocol
+  

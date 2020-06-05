@@ -1,0 +1,5 @@
+* ICE/TURN/STUN and SIP
+
+** TURN
+
+Hosts behind NAT can communicate with another host that can also be begind a NAT using a technique called "hole punching" (RFC 5128)
