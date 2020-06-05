@@ -1,11 +1,26 @@
 * ICE/TURN/STUN and SIP
 
-** STUN
+** STUN (Notes from RFC 8489)
 
 *** Overview
 
 - Provides means for an endpoint to determine the IP addr. and port allocated by a NAT that corresponds to its private IP addr. and port.
 - Provides a way for endpoints to keep NAT binding alive.
+- With some extensions (ICE RFC 8445) STUN can be used to do connectivity checks between endpoints
+- Can also relay packets between endpoints (TURN)
+
+**** STUN Usages
+- STUN is intended to be used in the context of one or more NAT traversal solutions.
+- These solutions are known as *STUN usages*. Describe how STUN is used to achieve NAT traversal.
+- A usage typically indicates when STUN message is sent, which oprional attr. to include, what server is used and what auth mechanism is used.
+- ICE is one usage, SIP outbound is another usage (RFC 5626)
+
+- STUN is a server-client protocol. Supports 2 types of transactions:
+  - request/response
+  - indication transaction, in which an agent (client or server) sends an indication that generates no response.
+  - Transactions include a transaction ID, randomly selected 96-bit number.
+
+Note for later read about XOR-MAPPED-ADDRESS attr. (this might help: https://www.netmanias.com/en/post/techdocs/6067/nat-network-protocol/nat-behavior-discovery-using-stun-rfc-5780)
 
 ** TURN
 
