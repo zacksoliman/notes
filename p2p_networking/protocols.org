@@ -1,10 +1,17 @@
 * ICE/TURN/STUN and SIP
 
+** NAT Behavioral Requirements
+
+*** Address and Port Mapping
+
+
+
 ** STUN (Notes from RFC 8489)
 
 *** Overview
 
-- Provides means for an endpoint to determine the IP addr. and port allocated by a NAT that corresponds to its private IP addr. and port.
+- Provides means for an endpoint to determine the IP addr. and port allocated by a NAT that corresponds
+  to its private IP addr. and port.
 - Provides a way for endpoints to keep NAT binding alive.
 - With some extensions (ICE RFC 8445) STUN can be used to do connectivity checks between endpoints
 - Can also relay packets between endpoints (TURN)
@@ -19,6 +26,24 @@
   - request/response
   - indication transaction, in which an agent (client or server) sends an indication that generates no response.
   - Transactions include a transaction ID, randomly selected 96-bit number.
+
+- All STUN messages start with a fixed header that includes a *method*, a *class* and the *transaction ID*.
+  - *Class*: Indicates whether this is a request, success/error response or an indication.
+  - *Method*: RFC 8489 only defines Binding method
+
+*Reflexive Transport Address*: When a /Binding/ requests is sent to a STUN server from a client, It might pass
+                               through one or more NATs. As the request passes through a NAT, the NAT will 
+			       modify the source transport address of the packet. As a result the source transport
+			       address will be the public IP:port created by the NAT closest to the server.
+			       This is called a /reflexive transport address/.
+
+- The reflexive transport addr. is copied into an XOR-MAPPED-ADDRESS IP attribute int the STUN binding response.
+  As the packet is passes back through a NAT, the NAT will modify the destination transport addr. in the IP
+  header but the XOR-MAPPED-ADDRESS attribute will remain untouched. This allows the client to learn its reflexive
+  address allocated by the outermost NAT with respect to the STUN server.
+
+- In some usages, STUN must be multiplexed with other protocols (e.g. ICE (RFC 8445) and SIP (RFC 5626))
+
 
 Note for later read about XOR-MAPPED-ADDRESS attr. (this might help: https://www.netmanias.com/en/post/techdocs/6067/nat-network-protocol/nat-behavior-discovery-using-stun-rfc-5780)
 
