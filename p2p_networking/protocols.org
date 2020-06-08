@@ -1,25 +1,63 @@
 * ICE/TURN/STUN and SIP
 
-** NAT Behavioral Requirements
+** NAT Behavioral Requirements (RFC 4887)
 
-*** Address and Port Mapping
+*** Mapping Behavior 
+
+**** Address and Port Mapping
 
 1. *Endpoint-Independent Mapping*:
 
    NAT assigns same external port mapping value to packets sent by an internal endpoint if:
    
-   (a) Packets have same *source IP address*
-   (b) Packets have same *source port*
+   a. Packets have same *source IP address*
+   b. Packets have same *source port*
 
 2. *Address-Dependent mapping*:
 
    NAT assigns sames external port mapping value if:
    
-   (a) Packets have same *source IP addr.*
-   (b) Packets have same *source port*.
-   (c) Packets have same *destination IP addr.*
+   a. Packets have same *source IP addr.*
+   b. Packets have same *source port*.
+   c. Packets have same *destination IP addr.*
+
+3. *Address and Port-Dependent Mapping*:
+
+   NAT assigns sames external port mapping value if:
+   
+   a. Packets have same *source IP addr.*
+   b. Packets have same *source port*.
+   c. Packets have same *destination IP addr.*
+   d. Packets have same *destination port*.
+
+RFC 4787 recommendation (REQ-1): A NAT MUST have an "Endpoint-independent Mapping" behavior. Failure to meet REQ-1
+will force the use of UDP relay, which is often impractical.
+
+**** Filtering Behavior
+
+** ICE (RFC 8445)
+
+**** Main Idea
+
+- 2 agents, A, B
+- Each agent has a variety of candidate transport addresses (IP:port combo for a praticular transport protocol)
+  that it could use to communicate with the other agent
+- Transport address candidate is either a:
+  
+  1. Transport address on a directly attached network interface
+  2. Server-reflexive address. (translated address on the public side of a NAT)
+  3. A relayed address (allocated from a TURN server)
+
+Any of the candidate addresses for A could be used to communicate with any of B's. However, not all combinations
+of candidate addresses will work. ICE discovers which pair of addresses work by systematically trying all possible
+pairs. (in a carfully sorted order)
+
+For ICE to execute, ICE agent identifies and gathers 
 
 ** STUN (Notes from RFC 8489)
+
+
+Read RFC 5780 NAT Behavior Discovery Using Session Traversal Utilities for NAT (STUN)
 
 *** Overview
 
@@ -89,4 +127,3 @@ Note for later read about XOR-MAPPED-ADDRESS attr. (this might help: https://www
 - TURN designed as one piece of the larger ICE approach to NAT traversal.
 
 - TURN is an extention of STUN protocol
-  
