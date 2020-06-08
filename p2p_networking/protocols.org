@@ -4,7 +4,20 @@
 
 *** Address and Port Mapping
 
+1. *Endpoint-Independent Mapping*:
 
+   NAT assigns same external port mapping value to packets sent by an internal endpoint if:
+   
+   (a) Packets have same *source IP address*
+   (b) Packets have same *source port*
+
+2. *Address-Dependent mapping*:
+
+   NAT assigns sames external port mapping value if:
+   
+   (a) Packets have same *source IP addr.*
+   (b) Packets have same *source port*.
+   (c) Packets have same *destination IP addr.*
 
 ** STUN (Notes from RFC 8489)
 
